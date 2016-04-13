@@ -1,0 +1,7 @@
+apiVersion: extensions/v1beta1
+kind: Migration
+metadata:
+  name: migration-test
+spec:
+  podName: hello-test
+  destNodeName: 127.0.0.1

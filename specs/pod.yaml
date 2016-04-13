@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-test
+  labels:
+    app: web
+spec:
+  netNamespace: test
+  podIP: 172.18.0.55
+  containers:
+    - name: helloworld
+      image: autilite/http-counter
+      ports:
+        - containerPort: 9000
