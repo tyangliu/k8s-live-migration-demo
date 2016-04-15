@@ -1,6 +1,4 @@
 terraform.tfplan
 terraform.tfstate
 terraform.tfstate.backup
-hack/destroy.sh
-hack/provision.sh
 hack/ignoreme.sh
