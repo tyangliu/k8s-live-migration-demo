@@ -4,4 +4,4 @@ metadata:
   name: migration-test
 spec:
   podName: hello-test
-  destNodeName: 127.0.0.1
+  destNodeName: k8s-minion-02
