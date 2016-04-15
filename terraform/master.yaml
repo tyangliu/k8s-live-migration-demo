@@ -8,15 +8,21 @@ write_files:
 
       chmod +x -R /usr/local/bin
       docker daemon >/dev/null 2>/dev/null &
+      docker network create --subnet=172.18.0.0/16 test
+
       kube-apiserver --allow-privileged --v=5 \
         --insecure-bind-address=0.0.0.0 \
         --insecure-port=8080 \
         --etcd-servers=http://${ETCD_IP}:4001 \
-        --service-cluster-ip-range="${SERVICE_IP_RANGE}" --cors-allowed-origins=. >/dev/null 2>/dev/null &
+        --service-cluster-ip-range="${SERVICE_IP_RANGE}" --cors-allowed-origins=. \
+        >"/tmp/kube-apiserver.log" 2>&1 &
+
       sleep 5
+
       kube-controller-manager --v=5 \
         --enable-hostpath-provisioner=false \
         --allocate-node-cidrs=true \
         --cluster-cidr="${CLUSTER_CIDR}" \
-        --master=127.0.0.1:8080 >/dev/null 2>/dev/null &
-      kube-scheduler --v=5 --master=127.0.0.1:8080 >/dev/null 2>/dev/null &
+        --master=127.0.0.1:8080 \
+        >"/tmp/kube-controller-manager.log" 2>&1 &
+      kube-scheduler --v=5 --master=127.0.0.1:8080 >"/tmp/kube-scheduler.log" 2>&1 &

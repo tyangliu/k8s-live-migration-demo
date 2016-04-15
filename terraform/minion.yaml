@@ -6,8 +6,13 @@ write_files:
     content: |
       #!/bin/bash
 
+      apt-get install aufs-tools
       chmod +x -R /usr/local/bin
-      docker daemon >/dev/null 2>/dev/null &
+      docker daemon >"/tmp/docker.log" 2>&1 &
+
+      sleep 5
+
+      docker network create --subnet=172.18.0.0/16 test
 
       kubelet --allow-privileged \
         --v=5 \
@@ -18,7 +23,8 @@ write_files:
         --cpu-cfs-quota=false \
         --port=10250 \
         --cluster-dns=8.8.8.8 \
-        >/dev/null 2>/dev/null &
+        --pod_infra_container_image="kubernetes/pause" \
+        >"/tmp/kubelet.log" 2>&1 &
 
       kube-proxy \
         --v=5 \
