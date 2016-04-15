@@ -1,0 +1,26 @@
+#cloud-config
+
+write_files:
+  - path: "/home/start.sh"
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+
+      chmod +x -R /usr/local/bin
+      docker daemon >/dev/null 2>/dev/null &
+
+      kubelet --allow-privileged \
+        --v=5 \
+        --chaos-chance=0.0 \
+        --container-runtime="docker" \
+        --address="0.0.0.0" \
+        --api-servers="${MASTER_IP}:${MASTER_PORT}" \
+        --cpu-cfs-quota=false \
+        --port=10250 \
+        --cluster-dns=8.8.8.8 \
+        >/dev/null 2>/dev/null &
+
+      kube-proxy \
+        --v=5 \
+        --master="http://${MASTER_IP}:${MASTER_PORT}" \
+        >/dev/null 2>/dev/null &

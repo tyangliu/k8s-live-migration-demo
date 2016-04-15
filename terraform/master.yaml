@@ -1,0 +1,22 @@
+#cloud-config
+
+write_files:
+  - path: "/home/start.sh"
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+
+      chmod +x -R /usr/local/bin
+      docker daemon >/dev/null 2>/dev/null &
+      kube-apiserver --allow-privileged --v=5 \
+        --insecure-bind-address=0.0.0.0 \
+        --insecure-port=8080 \
+        --etcd-servers=http://${ETCD_IP}:4001 \
+        --service-cluster-ip-range="${SERVICE_IP_RANGE}" --cors-allowed-origins=. >/dev/null 2>/dev/null &
+      sleep 5
+      kube-controller-manager --v=5 \
+        --enable-hostpath-provisioner=false \
+        --allocate-node-cidrs=true \
+        --cluster-cidr="${CLUSTER_CIDR}" \
+        --master=127.0.0.1:8080 >/dev/null 2>/dev/null &
+      kube-scheduler --v=5 --master=127.0.0.1:8080 >/dev/null 2>/dev/null &

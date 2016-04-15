@@ -1,0 +1,12 @@
+#cloud-config
+
+write_files:
+  - path: "/home/start.sh"
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+
+      chmod +x /usr/local/bin/etcd
+      mkdir ${ETCD_DIR}
+      etcd -data-dir /tmp/etcddata \
+        --bind-addr=0.0.0.0:4001 >/dev/null 2>/dev/null &
