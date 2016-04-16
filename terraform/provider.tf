@@ -131,7 +131,7 @@ EOF
 }
 
 ##########################################################################
-# k8s master start script
+# k8s minion start script
 ##########################################################################
 resource "template_file" "start_minion" {
 	template = "${file("minion.yaml")}"
@@ -213,5 +213,5 @@ resource "null_resource" "setup_kubectl" {
 			kubectl config set-context local --cluster=local
 			kubectl config use-context local
 EOF
-    }
+	}
 }
