@@ -8,6 +8,9 @@ write_files:
 
       chmod +x -R /usr/local/bin
       docker daemon >/dev/null 2>/dev/null &
+      
+      sleep 5
+      
       docker network create --subnet=172.18.0.0/16 test
 
       kube-apiserver --allow-privileged --v=5 \
