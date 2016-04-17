@@ -1,6 +1,6 @@
 # Kubernetes Live Migration Demo
 A demo testing rig for Kubernetes criu-based migration, including:
-* Terraform script to set up a 3 node, 1 master, 1 etcd cluster with all
+* Terraform script to set up a 3 node, 1 master, 1 etcd node with all
 required dependencies
 * Sample containers that exhibit in-memory state
 * Sample Kubernetes spec files to go along with those containers
@@ -9,9 +9,9 @@ required dependencies
 The Terraform script will deploy and configure a working Kubernetes toy cluster,
 and properly point kubectl to the master node's API server.
 
-1. Ensure you have [Terraform](https://www.terraform.io/downloads.html) installed
+1. Ensure that you have [Terraform](https://www.terraform.io/downloads.html) installed
 and in your system's PATH.
-2. Ensure you have kubectl for your respective platform in your system's PATH.
+2. Ensure that you have kubectl for your respective platform in your system's PATH.
 The binaries can tentatively be found [here](terraform/bin/k8s/kubectl).
 2. Clone the repo.
 3. Change working directory to `<path-to-cloned-repo>/terraform`.
